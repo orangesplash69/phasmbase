@@ -25,4 +25,4 @@ I'm simply a **fan** who appreciates the tool and wanted to provide easier onlin
 🧡 *All credit goes to the original developers of Phasmbase.*  
 *If you enjoy using the tool, please support them via the official NexusMods page above.*
 
-[^1]: yes this readme was created with chatgpt
+yes this readme was created with chatgpt
