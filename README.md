@@ -17,7 +17,7 @@ I'm simply a **fan** who appreciates the tool and wanted to provide easier onlin
 
 ## 🚀 Live Website
 
-👉 [Click here to view the hosted version](https://your-username.github.io/phasmbase)  
+👉 [Click here to view the hosted version](https://orangesplash69.github.io/phasmbase)  
 
 ---
 
