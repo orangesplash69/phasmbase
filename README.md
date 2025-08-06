@@ -19,7 +19,7 @@ I'm simply a **fan** who appreciates the tool and wanted to provide easier onlin
 
 👉 [Click here to view the hosted version](https://orangesplash69.github.io/phasmbase)  
 ---
-    > (https://orangesplash69.github.io/phasmbase)
+    (https://orangesplash69.github.io/phasmbase)
 ---
 
 🧡 *All credit goes to the original developers of Phasmbase.*  
