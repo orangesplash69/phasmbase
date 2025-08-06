@@ -1,0 +1,496 @@
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ БОКОВОГО САЙДБАРА --- */
+/* ========================================================================== */
+
+.sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0; /* Не сжимать сайдбар */
+    background-color: var(--sidebar-bg-color);
+    border-right: 1px solid var(--sidebar-border-color);
+    padding: var(--sidebar-padding); /* Используем переменную, предполагая, что она задает минимальный отступ */
+    box-sizing: border-box;
+    overflow-y: auto; /* Позволяем прокрутку, если содержимое превышает высоту */
+    max-height: 100vh; /* Ограничиваем высоту viewport */
+    color: var(--text-color);
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Общие стили для всех элементов списка в сайдбаре (li) */
+.sidebar li {
+    margin-bottom: 0px; /* Сохраняем минимальный отступ как на скриншоте */
+    display: flex; /* Используем flexbox для li */
+    align-items: center; /* Выравниваем элементы по центру по вертикали */
+}
+
+/* Общие стили для всех меток (label) в сайдбаре */
+.sidebar label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap; /* Предотвращаем перенос строк */
+    overflow: hidden; /* Скрываем текст, который не помещается */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+    font-size: 1em; /* Сохраняем размер шрифта как на скриншоте */
+    transition: color 0.2s ease;
+    padding-right: 5px;
+    /* УДАЛЕНО: width: 100%; - это вызывало растягивание иконок звука */
+}
+
+/* Общие стили для всех чекбоксов */
+.sidebar input[type="checkbox"] {
+    margin-right: 8px; /* Отступ справа от чекбокса */
+    flex-shrink: 0; /* Чтобы чекбокс не сжимался */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px; /* Стандартизированная ширина чекбокса */
+    height: 18px; /* Стандартизированная высота чекбокса */
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg-color);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.sidebar input[type="checkbox"]:checked {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--black-checkbox-color);
+}
+
+.sidebar input[type="checkbox"]:checked::after {
+    content: '✔'; /* Галочка */
+    color: var(--text-color-light);
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Стиль для текста пункта сайдбара, когда он активен (условие 2) */
+.sidebar li.active-text label {
+    color: var(--green-text-color);
+}
+/* Более специфичное правило для текста чекбокса, чтобы переопределить другие стили */
+#featureCheckboxes li.active-text label {
+    color: var(--green-text-color);
+}
+
+hr.my-separator {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin-top: 5px; /* Уменьшаем отступ сверху */
+    margin-bottom: 5px; /* Уменьшаем отступ снизу */
+}
+
+/* ========================================================================== */
+/* --- Убираем верхнюю горизонтальную черту в сайдбаре --- */
+/* ========================================================================== */
+.sidebar > hr.my-separator:first-child {
+    display: none; /* Скрываем первый разделитель, если он является прямым дочерним элементом сайдбара */
+}
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ШКАЛЫ СКОРОСТИ --- */
+/* ========================================================================== */
+
+
+/* Стиль для растягивания шкалы скорости на всю ширину сайдбара */
+.speed-slider-container {
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.speed-control-section {
+    margin-bottom: 15px; /* Отступ снизу */
+    margin-top: 10px; /* Отступ сверху */
+    padding: 10px;
+    padding-top: 3px;
+    padding-bottom: 5px;
+    background-color: var(--section-bg-color);
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1px; /* Adjust as needed to move it up */
+    margin-top: 1px; /* Добавлено для поднятия шкалы */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-and-button-container {
+    
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#playSpeedSoundButton {
+    /* Поднимаем кнопку на 2 пикселя относительно заголовка */
+    margin-top: -5px;
+}
+
+.speed-control-section h4 {
+    margin-top: -5px;
+    margin-bottom: 3px;
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+/* --- ИЗМЕНЕНИЯ: Стили для размещения заголовка и кнопки в одной строке --- */
+
+#speedSlider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: var(--slider-track-color);
+    outline: none;
+    border-radius: 5px;
+    opacity: 0.9;
+    transition: opacity .2s;
+}
+
+#speedSlider:hover {
+    opacity: 1;
+}
+
+#speedSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#speedSlider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.speed-labels {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: var(--text-color-secondary);
+    padding-left: 2px;
+}
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ИКОНОК УЛИК В САЙДБАРЕ (НОВЫЕ ФИЛЬТРЫ) --- */
+/* ========================================================================== */
+
+.evidence-filters {
+    display: flex; /* ИЗМЕНЕНО: Используем flexbox вместо grid для более точного контроля */
+    flex-wrap: nowrap; /* ИЗМЕНЕНО: Запрещаем перенос на новую строку */
+    justify-content: space-around; /* Распределяем элементы равномерно */
+    align-items: center;
+    gap: 5px; /* Отступы между иконками */
+    padding: 2px; /* Уменьшаем padding для компактности */
+    margin-bottom: 5px; /* Стандартизированный отступ снизу */
+}
+
+.filter-icon-container {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 2px; /* Уменьшаем padding для компактности */
+    border-radius: 5px;
+    display: flex; /* Для центрирования изображения внутри */
+    justify-content: center;
+    align-items: center;
+    background-color: transparent; /* По умолчанию без фона */
+    width: 30px; /* Фиксированная ширина для иконки */
+    height: 30px; /* Фиксированная высота для иконки */
+    flex-shrink: 0; /* Предотвращаем сжатие */
+}
+
+.filter-icon-container:hover {
+    background-color: var(--hover-color); /* ВОССТАНОВЛЕНО: Эффект выделения при наведении */
+}
+
+/* Активное состояние фильтра (включен) */
+.filter-icon-container.filter-active {
+    background-color: var(--active-header-bg-color);
+}
+
+/* Состояние фильтра "исключить" */
+.filter-icon-container.filter-exclude {
+    background-color: #6a0000; /* Темно-красный фон */
+}
+
+/* Стиль для самих иконок улик в сайдбаре (уменьшение размера) */
+.sidebar .sidebar-evidence-icon {
+    width: 25px;
+    height: 25px;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+/* Иконки в активном/исключенном фильтре должны быть цветными */
+.filter-icon-container.filter-active .sidebar-evidence-icon {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.filter-icon-container.filter-exclude .sidebar-evidence-icon {
+    filter: grayscale(100%) brightness(150%) sepia(100%) hue-rotate(0deg) saturate(200%);
+    opacity: 0.8;
+}
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ЧЕКБОКСОВ ФИЛЬТРА СКОРОСТИ --- */
+/* ========================================================================== */
+
+.speed-filter-checkboxes {
+    border-top: 1px solid var(--border-color); /* ВОССТАНОВЛЕНО: Граница сверху для map-section */
+    border-radius: 8px;
+    display: flex; /* Используем flexbox для расположения элементов в одну строку */
+    justify-content: space-around; /* Распределяем элементы равномерно */
+    align-items: center; /* Выравниваем по центру по вертикали */
+    padding: 0; /* Убираем внутренний отступ, чтобы использовать margin на li */
+    margin-bottom: 5px; /* Стандартизированный отступ снизу */
+    /* flex-wrap: wrap; */ /* УДАЛЕНО: Это свойство заставляло чекбоксы переноситься на новые строки */
+    gap: 10px; /* Отступ между чекбоксами */
+}
+
+.speed-filter-checkboxes label {
+    /* Эти стили уже покрыты общим .sidebar label */
+    white-space: nowrap; /* Предотвращает перенос текста метки */
+}
+
+.speed-filter-checkboxes input[type="checkbox"] {
+    /* Эти стили уже покрыты общим .sidebar input[type="checkbox"] */
+}
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ПОЛЯ HUNT-SANITY --- */
+/* ========================================================================== */
+
+.hunt-sanity-control {
+    margin-top: 5px; /* Стандартизированный отступ сверху */
+    margin-bottom: 5px; /* Стандартизированный отступ снизу */
+    padding: 0 5px; /* Добавляем горизонтальный padding для выравнивания */
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */ /* УДАЛЕНО: Это центрировало содержимое, а нам нужно выравнивание по левому краю */
+}
+
+.hunt-sanity-control label {
+    /* Эти стили уже покрыты общим .sidebar label */
+    cursor: text; /* Курсор для ввода текста */
+    width: 100%; /* Чтобы label занимал всю доступную ширину и выравнивал input/span */
+    justify-content: flex-start; /* Выравниваем содержимое label по левому краю */
+}
+
+.hunt-sanity-control input[type="number"] {
+    width: 24px; /* Или другая подходящая ширина */
+    height: 4px;
+    font-size: 15px;
+    padding: 5px;
+    margin-right: 8px; /* Стандартизированный отступ справа */
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    text-align: center;
+    -moz-appearance: textfield; /* Убираем стрелки в Firefox */
+}
+
+/* Убираем стрелки в Chrome, Safari, Edge */
+.hunt-sanity-control input[type="number"]::-webkit-outer-spin-button,
+.hunt-sanity-control input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ЧЕКБОКСОВ ОСОБЕННОСТЕЙ (ОСНОВНОЙ СПИСОК) --- */
+/* ========================================================================== */
+
+#featureCheckboxes {
+    border-top: 1px solid var(--border-color); /* ВОССТАНОВЛЕНО: Граница сверху для map-section */
+    border-radius: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 5px; /* Отступ сверху для отделения от предыдущего блока */
+    flex-grow: 1; /* Позволяет списку занимать доступное пространство */
+}
+
+#featureCheckboxes li {
+    /* margin-bottom уже установлен в .sidebar li */
+}
+
+#featureCheckboxes label {
+    /* Эти стили уже покрыты общим .sidebar label */
+}
+
+#featureCheckboxes label:hover {
+    color: var(--accent-color);
+}
+
+#featureCheckboxes input[type="checkbox"] {
+    /* Эти стили уже покрыты общим .sidebar input[type="checkbox"] */
+}
+
+#featureCheckboxes input[type="checkbox"]:checked {
+    /* background-color: var(--accent-color); - уже в общем правиле */
+    /* border-color: var(--accent-color); - уже в общем правиле */
+    color: var(--black-checkbox-color);
+}
+
+#featureCheckboxes input[type="checkbox"]:checked::after {
+    /* content: '✔'; - уже в общем правиле */
+    /* color: var(--text-color-light); - уже в общем правиле */
+    /* font-size: 14px; - уже в общем правиле */
+    /* position: absolute; - уже в общем правиле */
+    /* top: 50%; - уже в общем правиле */
+    /* left: 50%; - уже в общем правиле */
+    /* transform: translate(-50%, -50%); - уже в общем правиле */
+}
+
+/* Стиль для текста пункта сайдбара, когда он активен (условие 2) */
+.sidebar li.active-text label {
+    color: var(--green-text-color);
+}
+#featureCheckboxes li.active-text label {
+    color: var(--green-text-color);
+}
+
+
+/* ========================================================================== */
+/* --- МЕДИА-ЗАПРОСЫ ДЛЯ САЙДБАРА --- */
+/* ========================================================================== */
+
+@media (max-width: 772px) {
+    .sidebar {
+        width: 100%;
+        max-height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--sidebar-border-color);
+    }
+
+    .map-list {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding-right: 0;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ РАЗДЕЛА КАРТ --- */
+/* ========================================================================== */
+
+.map-section {
+    margin-top: 10px; /* Отступ сверху */
+    border-radius: 8px;
+    padding: 10px;
+    border-top: 1px solid var(--border-color); /* ВОССТАНОВЛЕНО: Граница сверху для map-section */
+}
+
+/* Стили для списка карт (вероятно, для модального окна) */
+.map-list {
+    /*max-height: 300px;  Максимальная высота списка карт */
+    overflow-y: auto;
+    padding-right: 5px; /* Отступ для полосы прокрутки */
+    /* ВОССТАНОВЛЕНО: Стили для границ и текста, которые были утеряны */
+    border-right: 1px solid var(--border-color); /* Граница справа */
+    font-size: 15px;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
+    line-height: 1;
+    box-sizing: border-box;
+}
+
+#mapList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#mapList li {
+    margin-bottom: 5px;
+    /* ВОССТАНОВЛЕНО: Стили для элементов списка карт */
+    padding: 1px 0; /* Внутренний отступ для элементов */
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.2s ease;
+    font-size: 0.9em; /* Размер шрифта для элементов списка */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#mapList li:hover {
+    background-color: var(--hover-color); /* ВОССТАНОВЛЕНО: Эффект выделения при наведении */
+}
+
+#mapList li.active {
+    /*! background-color: var(--accent-color); */
+    font-weight: bold;
+}
+
+#mapList button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95em;
+}
+
+#mapList button:hover {
+    background-color: var(--hover-color);
+    color: var(--accent-color);
+}
+
+#mapList li.active button {
+    background-color: var(--active-item-bg-color);
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Стили для разделителей в списке карт */
+#mapList li[data-is-divider="true"] {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: bold;
+    color: var(--accent-color-dark);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    /*pointer-events: none;  Делаем разделитель некликабельным */
+}

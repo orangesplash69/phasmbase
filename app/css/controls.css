@@ -1,0 +1,266 @@
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ кнопки переключения языка --- */
+/* ========================================================================== */
+
+.language-toggle {
+    position: fixed; /* Фиксированное позиционирование */
+    top: 1.5px; /* Отступ сверху */
+    left: 3px; /* ИЗМЕНЕНО: Исправлено отрицательное значение, чтобы кнопка не была смещена */
+    right: auto;
+    z-index: 1000;
+    padding: 1px 8px;
+    background-color: var(--green-overlay-color);
+    color: var(--color-text);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    max-width: 40px; /* Оставлено, чтобы сохранить ширину */
+    text-align: center; /* ДОБАВЛЕНО: Выравнивание текста по центру кнопки */
+    display: flex; /* ДОБАВЛЕНО: Использование flexbox для идеального центрирования */
+    justify-content: center; /* ДОБАВЛЕНО: Центрирование по горизонтали */
+    align-items: center; /* ДОБАВЛЕНО: Центрирование по вертикали */
+}
+
+.language-toggle:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+.language-toggle:active {
+    transform: translateY(0);
+}
+
+
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ КНОПОК ВОСПРОИЗВЕДЕНИЯ АУДИО --- */
+/* ========================================================================== */
+
+.audio-play-button {
+    background-color: var(--green-overlay-color); /* Темная полупрозрачная подложка */
+    color: greenyellow;
+    border: none;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px; /* Размер шрифта для символа */
+    margin-left: 5px; /* Отступ слева от текста чекбокса */
+    cursor: pointer;
+    border-radius: 3px; /* Слегка закругленные углы */
+    line-height: 1; /* Для вертикального центрирования символа */
+    vertical-align: middle; /* Выравнивание по центру с текстом */
+    flex-shrink: 0; /* Не давать кнопке сжиматься */
+    box-sizing: border-box; /* Учитывать padding/border в width/height */
+    display: flex; /* Для центрирования символа */
+    align-items: center; /* Центрирование символа */
+    justify-content: center; /* Центрирование символа */
+    margin-left: 0px;
+}
+
+.audio-play-button:hover {
+    background-color: #45a049; /* Темнее при наведении */
+}
+
+
+/* ========================================================================== */
+/* --- СТИЛИ ДЛЯ ТАЙМЕРОВ --- */
+/* ========================================================================== */
+
+
+.timer-controls {
+display: flex;
+align-items: center;
+gap: 10px;
+padding-bottom: 5px;
+}
+
+.timer-button {
+height: 25px;
+position: relative;
+    top: -4px; /* Поднимаем метки над полосой. Возможно, потребуется тонкая настройка */
+	
+    background-color: var(--green-overlay-color); /* Темная полупрозрачная подложка */
+    color: greenyellow;
+    border: none;
+    width: 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px; /* Размер шрифта для символа */
+    margin-left: 5px; /* Отступ слева от текста чекбокса */
+    cursor: pointer;
+    border-radius: 3px; /* Слегка закругленные углы */
+    line-height: 1; /* Для вертикального центрирования символа */
+    vertical-align: middle; /* Выравнивание по центру с текстом */
+    flex-shrink: 0; /* Не давать кнопке сжиматься */
+    box-sizing: border-box; /* Учитывать padding/border в width/height */
+    display: flex; /* Для центрирования символа */
+    align-items: center; /* Центрирование символа */
+    justify-content: center; /* Центрирование символа */
+    margin-left: 0px;
+}
+
+.timer-button:hover {
+    background-color: #45a049; /* Темнее при наведении */
+}
+
+.timer-bar-container {
+    position: relative;
+    flex-grow: 1;
+    height: 15px; /* Высота самой полосы прогресса */
+    background-color: var(--green-overlay-color); /* Изначально светлая шкала */
+    border-radius: 5px;
+    overflow: visible; /* Позволяем содержимому выходить за пределы, чтобы метки были видны */
+    min-width: 0; /* Убедимся, что контейнер может сжиматься */
+}
+
+.timer-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--dark-fill-color); /* Цвет заполнения (темный) */
+    border-radius: 5px;
+    transition: width 0.1s linear;
+    transform-origin: left; 
+}
+
+.timer-marks {
+    position: absolute;
+    top: -19px; /* Поднимаем метки над полосой. Возможно, потребуется тонкая настройка */
+    left: 0;
+    right: 0;
+    height: 40px; /* Высота области для меток (текст + линия) */
+    pointer-events: none; /* Позволяет кликать сквозь метки на полосу */
+    z-index: 2; /* Убедимся, что метки поверх полосы */
+}
+
+.timer-mark {
+    position: absolute; /* Абсолютное позиционирование для каждой метки */
+    width: 0; /* Делаем элемент нулевой ширины, чтобы он был точкой привязки */
+    height: 100%; /* Метка занимает всю высоту контейнера .timer-marks */
+}
+
+.timer-mark .mark-label {
+    position: absolute; /* Абсолютное позиционирование относительно .timer-mark (с шириной 0) */
+    left: 0; /* Начинаем от точки привязки */
+    transform: translateX(-50%); /* Центрируем метку по горизонтали относительно точки привязки */
+    display: block;
+    color: var(--text-color);
+    top: -3px; /* Позиционируем над таймер-баром */
+    white-space: nowrap; /* Предотвращаем перенос строки для текста метки */
+}
+.mark-label {
+    font-size: 0.8em;    
+}
+.timer-section h4 {
+    margin-bottom: 15px; /* Увеличьте это значение, чтобы увеличить отступ */
+    margin-top: 0; /* Убедитесь, что верхний отступ не мешает */
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+.timer-mark .line-anchor {
+    position: absolute; /* Абсолютное позиционирование относительно .timer-mark (с шириной 0) */
+    width: 2px; /* Толщина черты */
+    height: 19px; /* Высота черты, чтобы она была на уровне шкалы */
+    background-color: white; /* Временно для проверки видимости */
+    left: -0.75px; /* Половина ширины черты, чтобы центрировать ее относительно точки привязки */
+    z-index: 3; /* Убедимся, что черта поверх полосы */
+    top: 17px; /* Позиционируем черту, чтобы она начиналась на уровне шкалы таймера */
+}
+.timer-mark.highlighted .line-anchor {
+    background-color: var(--accent-color); /* Цвет выделения для черты */
+}
+.timer-section {
+    margin-top: -2px; /* Отступ сверху от предыдущего элемента */
+    margin-bottom: 0px; /* Отступ снизу от следующего элемента */
+    padding: 2px; /* Внутренние отступы со всех сторон */
+}
+
+/* Специфичное позиционирование для каждой метки */
+/* Smudge Timer (3 минуты = 180 секунд) */
+.timer-section#smudgeTimerSection .timer-mark.mark-1min {
+    right: calc(100% * (120 / 180)); /* 1 минута до конца (180-60=120) из 3 минут */
+}
+
+.timer-section#smudgeTimerSection .timer-mark.mark-1-5min {
+    right: calc(100% * (90 / 180)); /* 1.5 минуты до конца (180-90=90) из 3 минут */
+}
+
+.timer-section#smudgeTimerSection .timer-mark.mark-3min {
+    right: calc(100% * (0 / 180)); /* В самом конце (0 секунд до конца) */
+}
+
+/* Cooldown Timer (25 секунд) */
+.timer-section#cooldownTimerSection .timer-mark.mark-20s {
+    right: calc(100% * (5 / 25)); /* 5 секунд до конца (25-20=5) из 25 секунд */
+}
+
+/* Paranormal Sound Timer (80 секунд) */
+.timer-section#paranormalSoundTimerSection .timer-mark.mark-1min-paranormal {
+    right: calc(100% * (20 / 80)); /* 20 секунд до конца (80-60=20) из 80 секунд */
+}
+
+.timer-mark.highlighted .mark-label {
+    color: var(--accent-color); /* Цвет выделения для особых отметок */
+}
+.timer-section {
+    margin-top: -6px; /* Отступ сверху от предыдущего элемента */
+    margin-bottom: -3px; /* Отступ снизу от следующего элемента */
+    padding: 2px; /* Внутренние отступы со всех сторон */
+}
+
+/* ========================================================================== */
+/* --- ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ ПОЛОСЫ ПРОКРУТКИ (WEBKIT И MOZ) --- */
+/* ========================================================================== */
+
+/* Стили для Firefox */
+@-moz-document url-prefix(){
+    /* `scrollbar-width` делает полосу прокрутки тонкой */
+    .sidebar, .map-list, .ghost-grid, .ghost-info-right {
+        scrollbar-width: thin;
+        /* `scrollbar-color` задает цвет ползунка и трека */
+        scrollbar-color: var(--scrollbar-color);
+    }
+}
+
+/* Стиль для всей полосы прокрутки (WebKit) */
+.sidebar::-webkit-scrollbar,
+.map-list::-webkit-scrollbar,
+.ghost-grid::-webkit-scrollbar,
+.ghost-info-right::-webkit-scrollbar {
+    width: 3px; /* Толщина вертикальной полосы прокрутки */
+    height: 3px; /* Толщина горизонтальной полосы прокрутки */
+}
+
+/* Стиль для трека (фона) полосы прокрутки (WebKit) */
+.sidebar::-webkit-scrollbar-track,
+.map-list::-webkit-scrollbar-track,
+.ghost-grid::-webkit-scrollbar-track,
+.ghost-info-right::-webkit-scrollbar-track {
+    background: rgba(var(--scrollbar-color-track-rgb), 0.1); /* Используем компоненты цвета из переменной */
+    border-radius: 2px; /* Скругление углов трека */
+}
+
+/* Стиль для ползунка (thumb) полосы прокрутки (WebKit) */
+.sidebar::-webkit-scrollbar-thumb,
+.map-list::-webkit-scrollbar-thumb,
+.ghost-grid::-webkit-scrollbar-thumb,
+.ghost-info-right::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--scrollbar-color-thumb-rgb), 0.6); /* Используем компоненты цвета из переменной */
+    border-radius: 2px; /* Скругление углов ползунка */
+    border: 0px solid transparent; /* Убираем рамку */
+}
+
+/* Стиль для ползунка при наведении (WebKit) */
+.sidebar::-webkit-scrollbar-thumb:hover,
+.map-list::-webkit-scrollbar-thumb:hover,
+.ghost-grid::-webkit-scrollbar-thumb:hover,
+.ghost-info-right::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(var(--scrollbar-color-thumb-rgb), 0.8); /* Еще темнее при наведении */
+}

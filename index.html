@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ru" data-default-lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="version" content="5.0.0">
+    <meta name="build-date" content="2025-08-01">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="radsyysy">
+    <title>Phasmbase</title>
+    <link rel="stylesheet" href="./app/css/variables.css">
+    <link rel="stylesheet" href="./app/css/base.css">
+    <link rel="stylesheet" href="./app/css/sidebar.css">
+    <link rel="stylesheet" href="./app/css/table.css"> 
+    <link rel="stylesheet" href="./app/css/controls.css">
+    <link rel="stylesheet" href="./app/css/modal.css">
+    <link rel="icon" href="./app/img/features/ico.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./app/img/features/ico.png" type="image/x-icon">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+    <button id="languageToggle" class="language-toggle">LNG</button>
+            <div class="speed-control-section">
+                <!-- Обернул заголовок и кнопку в отдельный контейнер -->
+                <div class="title-and-button-container">
+                    <h4 data-lang-key="ghost-speed-title" data-original-string="{Скорость призрака} [Ghost Speed]">{Скорость призрака} [Ghost Speed]</h4>
+                    <button id="playSpeedSoundButton" class="audio-play-button">&#9658;</button>
+                </div>
+                        		<div class="speed-slider-container">
+                    <input type="range" id="speedSlider" min="0" max="4" step="1" value="2">
+                    <div class="speed-labels">
+                        <span>50%</span> <span>75%</span> <span>100%</span> <span>125%</span> <span>150%</span>
+                    </div>
+                </div>
+            </div>			 <div class="evidence-filters">
+                <div class="filter-icon-container" data-feature-key="emp">
+                    <img src="./app/img/features/emp.png" alt="EMF5" class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="dots">
+                    <img src="./app/img/features/dots.png" alt="D.O.T.S." class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="uf">
+                    <img src="./app/img/features/uf.png" alt="Ultraviolet" class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="lights">
+                    <img src="./app/img/features/lights.png" alt="GhostOrb" class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="book">
+                    <img src="./app/img/features/book.png" alt="Book" class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="radio">
+                    <img src="./app/img/features/radio.png" alt="SpiritBox" class="sidebar-evidence-icon">
+                </div>
+                <div class="filter-icon-container" data-feature-key="zero">
+                    <img src="./app/img/features/zero.png" alt="Temperature" class="sidebar-evidence-icon">
+                </div>
+            </div>
+
+			<hr class="my-separator">
+			<!-- Таймер 1: Накуривание -->
+			<div class="timer-section" id="smudgeTimerSection">
+				<h4 data-lang-key="timer-smudge-title" data-original-string="{Накуривание} [Smudge]">{Накуривание} [Smudge]</h4>
+				<div class="timer-controls">
+					<button class="timer-button" data-timer-id="smudge">&#9658;</button> <!-- Кнопка запуска/остановки -->
+					<div class="timer-bar-container">
+						<div class="timer-bar" id="smudgeTimerBar"></div>
+						<div class="timer-marks">
+						<span class="timer-mark mark-1min">
+						<span class="line-anchor"></span>
+							<span class="mark-label" data-lang-key="demon-label" data-original-string="{Демон} [Demon]">{Демон} [Demon]</span>
+							<!-- УДАЛЕНО: <span class="mark-line-anchor"></span> -->
+						</span>
+						<span class="timer-mark mark-1-5min highlighted">
+						<span class="line-anchor"></span>
+							<!-- Эта метка без имени, только для черты -->
+						</span>
+						<span class="timer-mark mark-3min">
+						<span class="line-anchor"></span>
+							<span class="mark-label" data-lang-key="spirit-label" data-original-string="{Дух} [Spirit]">{Дух} [Spirit]</span>
+						</span>
+						</div>
+					</div>
+					<span class="timer-current-time" id="smudgeCurrentTime">00:00</span> <!-- Добавлен элемент для отображения текущего времени -->
+				</div>
+			</div>
+			<hr class="my-separator">
+			<!-- Таймер 2: Кулдаун -->
+			<div class="timer-section" id="cooldownTimerSection">
+				<h4 data-lang-key="timer-cooldown-title" data-original-string="{Кулдаун} [Cooldown]">{Кулдаун} [Cooldown]</h4>
+				<div class="timer-controls">
+					<button class="timer-button" data-timer-id="cooldown">&#9658;</button>
+					<div class="timer-bar-container">
+						<div class="timer-bar" id="cooldownTimerBar"></div>
+						<div class="timer-marks">
+							<span class="timer-mark mark-20s">
+							<span class="line-anchor"></span>
+								<span class="mark-label" data-lang-key="demon-label" data-original-string="{Демон} [Demon]">{Демон} [Demon]</span>
+								<!-- УДАЛЕНО: <span class="mark-line-anchor"></span> -->
+							</span>
+						</div>
+					</div>
+					<span class="timer-current-time" id="cooldownCurrentTime">00:00</span> <!-- Добавлен элемент для отображения текущего времени -->
+				</div>
+			</div>
+			<hr class="my-separator">
+			<!-- Таймер 3: Паранормальные звуки -->
+			<div class="timer-section" id="paranormalSoundTimerSection">
+				<h4 data-lang-key="timer-paranormal-sound-title" data-original-string="{Паранормальные звуки} [Paranormal Sound]">{Паранормальные звуки} [Paranormal Sound]</h4>
+				<div class="timer-controls">
+					<button class="timer-button" data-timer-id="paranormalSound">&#9658;</button>
+					<div class="timer-bar-container">
+						<div class="timer-bar" id="paranormalSoundTimerBar"></div>
+						<div class="timer-marks">
+							<span class="timer-mark mark-1min-paranormal">
+							<span class="line-anchor"></span>
+								<span class="mark-label" data-lang-key="myling-label" data-original-string="{Мюлинг} [Myling]">{Мюлинг} [Mюлинг]</span>
+								<!-- УДАЛЕНО: <span class="mark-line-anchor"></span> -->
+							</span>
+						</div>
+					</div>
+					<span class="timer-current-time" id="paranormalSoundCurrentTime">00:00</span> <!-- Добавлен элемент для отображения текущего времени -->
+				</div>
+			</div>
+
+
+<div class="speed-filter-checkboxes"> <!-- Новый контейнер для чекбоксов скорости -->
+    <label>
+        <input type="checkbox" data-feature-id="speed-slow">
+        <span data-lang-key="speed-slow" data-original-string="{медлен} [slow]">{медлен} [slow]</span>
+    </label>
+    <label>
+        <input type="checkbox" data-feature-id="speed-norm">
+        <span data-lang-key="speed-norm" data-original-string="{норм} [norm]">{норм} [norm]</span>
+    </label>
+    <label>
+        <input type="checkbox" data-feature-id="speed-fast">
+        <span data-lang-key="speed-fast" data-original-string="{быстр} [fast]">{быстр} [fast]</span>
+    </label>
+</div>
+
+<div class="hunt-sanity-control">
+    <label for="huntSanityInput" data-lang-key="hunt-sanity-label" data-original-string="{Рассудок для охоты} [Hunt Sanity]">
+        <input type="number" id="huntSanityInput" placeholder="%" min="0" max="100">
+        <span data-lang-key="hunt-sanity-text" data-original-string="{Рассудок для охоты} [Hunt Sanity]">{Рассудок для охоты} [Hunt Sanity]</span>
+    </label>
+</div>
+
+            <ul id="featureCheckboxes"> <!-- Список чекбосов для фильтрации призраков по особенностям. -->
+
+                <li><label>
+                    <input type="checkbox" data-feature-id="comes-in-salt">
+                    <span data-lang-key="comes-in-salt" data-original-string="{Наступает в соль} [Comes in salt]">{Наступает в соль} [Comes in salt]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="makes-a-Airball">
+                    <span data-lang-key="makes-a-airball" data-original-string="{Делает дымку} [Makes a Airball]">{Делает дымку} [Makes a Airball]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="turns-on-the-light">
+                    <span data-lang-key="turns-on-the-light" data-original-string="{Включает свет} [Turns on the light]">{Включает свет} [turns on the light]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="walk-far-from-room">
+                    <span data-lang-key="walk-far-from-room" data-original-string="{Меняет/уходит от комнаты} [Changes/leaves room]">{Меняет/уходит от комнаты} [Changes/leaves room]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="shake-the-door">
+                    <span data-lang-key="shake-the-door" data-original-string="{Трясёт дверью} [Shake the door]">{Трясёт дверью} [Shake the door]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="turnon-breaker">
+                    <span data-lang-key="turnon-breaker" data-original-string="{Включает щиток} [Turn on Breaker]">{Включает щиток} [Turn on Breaker]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="turnoff-breaker">
+                    <span data-lang-key="turnoff-breaker" data-original-string="{Выключает щиток} [Turn off Breaker]">{Выключает щиток} [Turn off Breaker]</span>
+                </label></li>
+<hr class="my-separator">
+                <li><label>
+                    <input type="checkbox" data-feature-id="faster-drains-the-mind">
+                    <span data-lang-key="faster-drains-the-mind" data-original-string="{Быстрее истощает рассудок} [Faster drains the mind]">{Быстрее истощает рассудок} [Faster drains the mind]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="move-to-player-not-geh">
+                    <span data-lang-key="move-to-player-not-geh" data-original-string="{Движение к игроку (не ГЕ/О)} [Move to player (not GE/H)]">{Движение к игроку (не ГЕ/О)} [Move to player (not GE/H)]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="six-fingered-prints">
+                    <span data-lang-key="six-fingered-prints" data-original-string="{Шестипалые отпечатки} [Six-fingered prints]">{Шестипалые отпечатки} [Six-fingered prints]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="dots-on-camera-only">
+                    <span data-lang-key="dots-on-camera-only" data-original-string="{Проектор только на камере} [Dots on camera only]">{Проектор только на камере} [Dots on camera only]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="radio-hiss">
+                    <span data-lang-key="radio-hiss" data-original-string="{Радио: шипение} [Radio: hiss]">{Радио: шипение} [Radio: hiss]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="microphone-scream">
+                    <span data-lang-key="microphone-scream" data-original-string="{Микрофон: крик} [Microphone: scream]">{Микрофон: крик} [Microphone: scream]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="doesnt-like-fire">
+                    <span data-lang-key="doesnt-like-fire" data-original-string="{Не любит огонь} [Doesn't like fire]">{Не любит огонь} [Doesn't like fire]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="Doesnt-like-the-light">
+                    <span data-lang-key="Doesnt-like-the-light" data-original-string="{Не любит свет} [Doesn't like the light]">{Не любит свет} [Doesn't like the light]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="throws-objects-hard">
+                    <span data-lang-key="throws-objects-hard" data-original-string="{Сильно швыряет предметы} [Throws objects hard]">{Сильно швыряет предметы} [Throws objects hard]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="interactions-remote-points">
+                    <span data-lang-key="interactions-remote-points" data-original-string="{Действия далеко друг от друга} [Interactions remote points]">{Действия далеко друг от друга} [Interactions далеко друг от друга]</span>
+                </label></li>
+<hr class="my-separator">
+                <li><label>
+                    <input type="checkbox" data-feature-id="slows-down-when-close">
+                    <span data-lang-key="slows-down-when-close" data-original-string="{Замедляется при приближении} [Slows down when close]">{Замедляется при приближении} [Slows down when close]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="accelerates-when-detected">
+                    <span data-lang-key="accelerates-when-detected" data-original-string="{Ускоряется при обнаружении} [Accelerates when detected]">{Ускоряется при обнаружении} [Accelerates при обнаружении]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="notaccelerating-on-the-hunt">
+                    <span data-lang-key="notaccelerating-on-the-hunt" data-original-string="{Не ускоряется на охоте} [Not accelerating on the hunt]">{Не ускоряется на охоте} [Not accelerating on the hunt]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="steam-at-low-temp">
+                    <span data-lang-key="steam-at-low-temp" data-original-string="{Пар при низкой температуре} [Steam at low temp]">{Пар при низкой температуре} [Steam at low temp]</span>
+                </label></li>
+                <li><label>
+                    <input type="checkbox" data-feature-id="quiet-footsteps-hunt">
+                    <span data-lang-key="quiet-footsteps-hunt" data-original-string="{Тихие шаги на охоте} [Quiet footsteps hunt]">{Тихие шаги на охоте} [Quiet footsteps hunt]</span>
+                </label></li>
+            </ul>
+            <div class="map-section">
+                <div class="map-list">
+                    <ul id="mapList"> <!-- Список карт для модального окна. -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Новый контейнер для отображения призраков в виде карточек -->
+            <div id="ghostGrid" class="ghost-grid">
+                <!-- Здесь будут динамически добавляться блоки призраков из renderer.js -->
+            </div>
+        </div>
+    </div>
+
+    <div id="mapModal" class="modal"> <!-- Модальное окно для отображения карт. -->
+        <div class="modal-content">
+            <span class="close-button">&times;</span> <!-- Кнопка закрытия модального окна. -->
+            <div class="modal-header">
+                <h3 id="mapModalTitle"></h3> <!-- Заголовок модального окна (может быть динамическим). -->
+            </div>
+            <div class="modal-body">
+                <div class="map-display">
+                    <img id="currentMapImage" src="" alt="Схема локации"> <!-- Изображение текущей выбранной карты. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+const GHOSTS_DATA_EMBEDDED = [
+{
+"name": "{Банши} [Banshee]", "number": "5",
+"book": " ", "lights": "x", "dots": "x", "uf": "x", "emp": " ", "radio": " ", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [
+"{66% шанс блуждать к цели без ЭМП (можно проверять датчиком движения).} [66% chance to roam towards its target without leaving EMF.]"
+],
+"weakSide": [],
+"0evidence": [
+"{33% шанс уникального крика в направленный микрофон.} [33% chance of a unique scream through the parabolic microphone.]",
+"{Охотится на основе рассудка цели, а не группы} [Hunts based on the target's sanity.]",
+"{Цель теряет 15% рассудка, если касается призрака во время события 'поющий призрак'.} [Target loses 15% sanity if they touch the ghost during a 'singing ghost' event.]",
+"{Предпочитает события 'поющий призрак'.} [Prefers 'singing ghost' events.]",
+"{66% шанс блуждать к цели без ЭМП (можно проверять датчиком движения).} [66% chance to roam towards its target without leaving EMF.]",
+"{(Тест: Слушайте уникальный крик. + датчик движения далеко от комнаты и без ЭМП)} [(Test: Listen for a unique scream. In multiplayer, if it does not pursue non-target players.)]"
+]
+},
+{
+"name": "{Близнецы} [The Twins]", "number": "18",
+"book": " ", "lights": " ", "dots": " ", "uf": " ", "emp": "x", "radio": "x", "zero": "x", "percentage": "50%", "speed": "1.5/1.9",
+"strongSide": [
+"{Любой из Близнецов может разозлиться и начать охоту. 25с перерыв между охотами.} [Either of the Twins can get angry and start a hunt. there is a 25s cooldown between hunts.]"
+],
+"weakSide": [
+"{Часто взаимодействуют на расстоянии.} [Often interact across range.]",
+"{Второй близнец невидим датчикам и его охота не останавливается распятием; } [The decoy is immune to sensors and radio, and its hunt is not stopped by a crucifix; ]"
+],
+"0evidence": [
+"{Могут совершать 2 взаимодействия одновременно.} [Can perform 2 interactions simultaneously.]",
+"{Скорость охоты 1.5м/с или 1.9м/s.} [Hunt speed is 1.5m/s or 1.9m/s.]",
+"{(Тест: Чередует скорости 1.5м/с и 1.9м/с. Частые взаимодействия далеко от комнаты призрака.)} [(Test: Alternates between 1.5m/s and 1.9m/s speeds. Frequent interactions far from the ghost room.)]"
+]
+},
+{
+"name": "{Горё} [Goryo]", "number": "15",
+"book": " ", "lights": " ", "dots": "x", "uf": "x", "emp": "x", "radio": " ", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [
+"{Не скрывает улику D.O.T.S., если она есть} [Doesn't hide evidence D.O.T.S.]",
+"{Может бродить только на маленькие дистанции от своей комнаты.} [Can only roam short distances from its room.]"
+],
+"0evidence": [
+"{Взаимодействует с D.O.T.S. только если в его комнате нет игроков. Лазерная проекция (Горё) видна только через видеокамеру, невооружённому глазу не видна.} [Interacts with the D.O.T.S. projector only if there are no players in its room. Goryo's D.O.T.S. projection is only visible through a video camera, not to the naked eye.]",
+"{Не может менять любимые комнаты.} [Cannot change favorite rooms.]",
+"{Не часто блуждает из своей комнаты.} [Does not wander from its room often.]"
+]
+},
+{
+"name": "{Демон} [Demon]", "number": "10",
+"book": "x", "lights": " ", "dots": " ", "uf": "x", "emp": " ", "radio": " ", "zero": "x", "percentage": "70%", "speed": "1.7",
+"strongSide": [
+"{Атакует чаще, чем остальные призраки. (кулдаун 20сек вместо 25)} [Attacks more frequently than other ghosts. (cooldown 20sec.)]"
+],
+"weakSide": [
+"{Радиус действия распятия увеличен на 50%.} [Crucifix radius is increased by 50%.]"
+],
+"0evidence": [
+"{Может охотиться через 60с после окуривания (вместо 90с).} [Can hunt 60s after being smudged (instead of 90s).]",
+"{Может охотиться через 20с после окончания охоты/использования распятия (вместо 25с).} [Can hunt 20s after the previous hunt has ended/crucifix has been used (instead of 25s).]",
+"{Может охотиться при любом рассудке.} [Can hunt at any sanity.]",
+"{(Тест: Охотится до 90с после окуривания. Охотится до 25с после окончания охоты/использования распятия. Охотится >80% рассудка.)} [(Test: Hunts before 90s after being smudged. Hunts before 25s after hunt ends/crucifix used. Hunts >80% sanity.)]"
+]
+},
+{
+"name": "{Деоген} [Deogen]", "number": "23",
+"book": "x", "lights": " ", "dots": "x", "uf": " ", "emp": " ", "radio": "x", "zero": " ", "percentage": "40%", "speed": "0.4-3.0",
+"strongSide": [
+"{Всегда знает ваше местоположение, прятаться от него нет смысла.} [Always knows your location, there's no point in hiding from it.]"
+],
+"weakSide": [
+"{Не скрывает улику Радиоприёмник.} [Doesn't hide evidence Spirit Box.]",
+"{33% шанс уникального дыхания в 1м.} [33% chance of unique breathing at 1m.]"
+],
+"0evidence": [
+"{Очень высокая скорость охоты, но замедляется при приближении к целевому игроку.} [Very fast hunt speed, but slows down as it nears the targeted player.]",
+"{Более заметен во время охоты.} [Is more visible during hunts.]",
+"{(Тест: Быстро приближается, но сильно замедляется рядом. Исключение: Охотится >40% рассудка.)} [(Test: Approaches quickly, but slows down significantly when near. Exclusion: Hunts above 40% sanity.)]"
+]
+},
+{
+"name": "{Джинн} [Jinn]", "number": "6",
+"book": " ", "lights": " ", "dots": " ", "uf": "x", "emp": "x", "radio": " ", "zero": "x", "percentage": "50%", "speed": "1.7/2.25",
+"strongSide": [],
+"weakSide": [
+"{Не использует способность при выключенном щитке.} [Cannot use ability if fuse box is off.]"
+],
+"0evidence": [
+"{При включенном рубильнике ускоряется во время охоты, если игрок в LOS и >3м, и замедляется при приближении.} [With the breaker on, speeds up during a hunt if player is in LOS and >3m away.]",
+"{Не может напрямую выключить рубильник, только через перегруз.} [Cannot directly turn off the breaker.]",
+"{При включенном рубильнике снижает рассудок на 25% с ЭМП 2 у рубильника.} [With the breaker on, drops sanity by 25% with EMF 2 at the breaker.]",
+"{(Тест: Если ускоряется с 1.7м/с до 2.5м/с на расстоянии >3м и замедляется <3м, это Джинн. Если рубильник выключается призраком, это не Джинн.)} [(Test: If it speeds up from 1.7m/s to 2.5m/s at >3m and slows down <3m, it's a Jinn. If the breaker is turned off by the ghost, it is not a Jinn.)]"
+]
+},
+{
+"name": "{Дух} [Spirit]", "number": "1",
+"book": "x", "lights": " ", "dots": " ", "uf": " ", "emp": "x", "radio": "x", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [
+"{После окуривания долго не может охотиться}[Cannot hunt for a long time after being smudged]",
+],
+"0evidence": [
+"{После окуривания подождет 180с, прежде чем снова попытается начать охоту (вместо 90с).} [Will wait 180s after being smudged before attempting to hunt again (instead of 90s).]",
+"{Если охотится до 180с после окуривания, это не Дух.} [If it hunts before 180s after being smudged, it is not a Spirit.]",
+"{Если охотится в течение 60с после второго окуривания (через 150-170с), это Дух.} [If it hunts within 60s of the second smudge (after 150-170s), it is a Spirit.]"
+]
+},
+{
+"name": "{Ёкай} [Yokai]", "number": "13",
+"book": " ", "lights": "x", "dots": "x", "uf": " ", "emp": " ", "radio": "x", "zero": " ", "percentage": "50/80%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [
+"{Материализуется у играющей шкатулки в 2.5м.} [Materializes at playing music box within 2.5m.]"
+],
+"0evidence": [
+"{Дальность слышимости/обнаружения составляет <2.5м во время охоты.} [Hearing/detection distance is <2.5m during hunts.]",
+"{Более активен, когда вы говорите рядом с ним.} [More active when talking near it.]",
+"{Разговор в комнате с Йокаем может заставить его охотиться при среднем рассудке до 80%.} [Talking in the same room as a Yokai can cause it to hunt up to 80% average sanity.]",
+"{(Тест: Во время охоты говорите на расстоянии, где нормальный призрак услышал бы, но Йокай нет, и он не обнаружит вас. Исключение: Если он обнаруживает вас на этом расстоянии, это не Йокай.)} [(Test: During a hunt, speak at a distance where a normal ghost could hear you but a Yokai could not, and it does not detect you. Exclusion: If it detects you at this distance, it is not a Yokai.)]"
+]
+},
+{
+"name": "{Мара} [Mare]", "number": "7",
+"book": "x", "lights": "x", "dots": " ", "uf": " ", "emp": " ", "radio": "x", "zero": " ", "percentage": "40/60%", "speed": "1.7",
+"strongSide": [
+"{Активнее в темноте.} [More active in the dark.]"
+],
+"weakSide": [
+"{Фонарики, зажигалки, свечи не влияют на порог рассудка для начала охоты.} [Flashlights, lighters, candles do not affect the sanity threshold for hunting.]"
+],
+"0evidence": [
+"{Не будет охотиться до 40% рассудка со светом, 60% без света.} [Won't hunt until 40% average sanity with light on, 60% without light.]",
+"{Больше блуждает, если свет включен.} [Will wander more if the lights are on.]",
+"{Предпочитает выключать свет.} [Prefers turning off lights.]",
+"{Не может включать свет.} [Cannot turn on lights.]",
+"{Может немедленно выключить выключатель света/лампу, включенные игроком в 4м.} [Can immediately turn off a light switch/lamp a player has turned on within 4m.]",
+"{(Тест: Если призрак включает свет, это не Мара. Попытайтесь заставить Мару немедленно выключить свет.)} [(Test: If the ghost turns on a light, it is not a Mare. Try to bait the Mare to immediately turn off a light.)]"
+]
+},
+{
+"name": "{Мимик} [The Mimic]", "number": "21",
+"book": " ", "lights": "x", "dots": " ", "uf": "x", "emp": " ", "radio": "x", "zero": "x", "percentage": "50/100%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [],
+"0evidence": [
+"{Всегда будет показывать Призрачные сферы.} [Will always show Ghost Orbs.]",
+"{Имитирует другого призрака каждые 30-120 секунд.} [Mimics a different ghost every 30-120 seconds.]",
+"{(Тест: Есть Призрачные сферы при 0 уликах. Поведение дико меняется между охотами. Исключение: Нет Призрачных сфер.)} [(Test: Ghost Orbs are present with 0 evidence. Behavior changes wildly between hunts. Exclusion: No Ghost Orbs.)]"
+]
+},
+{
+"name": "{Мираж} [Wraith]", "number": "2",
+"book": " ", "lights": " ", "dots": "x", "uf": " ", "emp": "x", "radio": "x", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [
+"{Может телепортироваться к случайному игроку, оставляя ЭМП 2.} [Can teleport to a random player, leaving EMF 2.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Не касается соли и не будет с ней взаимодействовать.} [Will not touch nor interact with salt in any way.]",
+"{Не будет замедляться солью 3-го уровня во время охоты.} [Will not be slowed down by Tier 3 salt during a hunt.]",
+"{Может телепортироваться к случайному игроку, оставляя ЭМП 2.} [Can teleport to a random player, leaving EMF 2.]",
+"{(Тест: Если призрак проходит сквозь кучу соли, не нарушая ее, это Мираж. Если датчик движения активируется, но соль не тронута, это Мираж. Исключение: Если соль была нарушена призраком, это не Мираж.)} [(Test: If the ghost walks through salt without disturbing it, it's a Wraith. If motion sensor activates but salt is undisturbed, it's a Wraith. Exclusion: If salt is disturbed by the ghost, it is not a Wraith.)]"
+]
+},
+{
+"name": "{Морой} [Moroi]", "number": "22",
+"book": "x", "lights": " ", "dots": " ", "uf": " ", "emp": " ", "radio": "x", "zero": "x", "percentage": "45%", "speed": "1.5-2.25",
+"strongSide": [],
+"weakSide": [],
+"0evidence": [
+"{Накладывает проклятие (рассудок x2) при слышимости через параболический микрофон.} [Places a curse (2x sanity drain) when heard through parabolic microphone.]",
+"{Слепота от окуривания 7с. вместо 5с.} [Incense blindness duration is 7s.]",
+"{Быстрее при низком рассудке.} [Faster when average sanity is lower.]",
+"{(Тест: Увеличение скорости между охотами с LOS. После окуривания >5с на возвращение. Невозможно остановить пассивное истощение рассудка в освещенной комнате после шепота. Скорость призрака уменьшается после приема лекарства от рассудка (<40%)).} [(Test: Increased speed between hunts with LOS. Takes >5s to return after smudging. Cannot stop passive sanity drain in a lit room after hearing a whisper. Ghost speed decreases after taking sanity medication (<40%)).]"
+]
+},
+{
+"name": "{Мюлинг} [Myling]", "number": "16",
+"book": "x", "lights": " ", "dots": " ", "uf": "x", "emp": "x", "radio": " ", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [],
+"0evidence": [
+"{Шаги и вокал не слышны >12м во время охоты (примерно дистанция сбоя электроники).} [Footsteps and vocals not heard >12m away during hunts.]",
+"{Чаще издает звуки через параболический микрофон (1мин вместо ~1:20).} [Makes sounds through the parabolic microphone more frequently.]",
+"{(Тест: Не слышите призрака между 12м и 20м. Два паранормальных звука через параболический микрофон <80с. Исключение: Слышите призрака между 12м и 20м, это не Мюлинг.)} [(Test: Cannot hear ghost between 12m and 20m. Two paranormal sounds through parabolic microphone <80s. Exclusion: Can hear ghost between 12m and 20m, it is not a Myling.)]"
+]
+},
+{
+"name": "{Обакэ} [Obake]", "number": "20",
+"book": " ", "lights": "x", "dots": " ", "uf": "x", "emp": "x", "radio": " ", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [
+"{Может не оставить отпечатков при взаимодействии с дверью/выключателем, даже если имеет их как улику.} [May not leave fingerprints when interacting with a door/switch, even if it has them as evidence.]"
+],
+"weakSide": [
+"{Не скрывает улику Ультрафиолет, если она есть.} [Does not hide Ultraviolet evidence if there is one.]"
+],
+"0evidence": [
+"{Шанс 16.7% оставить 6 пальцев или два отпечатка.} [Sometimes leaves 6 fingers or two prints (16.7% chance).]",
+"{Будет менять модели на одно моргание во время охоты.} [Will change models for a single blink during hunts.]",
+"{(Тест: Модель меняется на одно моргание во время зацикливания. Пропущенный шаг после соли.)} [(Test: Model changes for a single blink while looping. Missed step after salt.)]"
+]
+},
+{
+"name": "{Они} [Oni]", "number": "12",
+"book": " ", "lights": " ", "dots": "x", "uf": " ", "emp": "x", "radio": " ", "zero": "x", "percentage": "50%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [],
+"0evidence": [
+"{Истощает 20% рассудка во время событий.} [Drains 20% sanity during events.]",
+"{Не будет устраивать событие 'Призрачный туман'.} [Will not do 'Ghost Mist' event.]",
+"{Чаще моргает во время охоты (более заметен).} [Blinks more frequently during hunts (more visible).]",
+"{Более активен вокруг нескольких людей.} [More active around multiple people.]",
+"{Чаще появляется как полная модель призрака.} [More likely to appear as a full ghost model.]",
+"{(Тест: Более заметен во время охоты. Рассудок упал на 20% после события. Исключение: Если есть событие 'Призрачный туман', это не Они.)} [(Test: More visible during a hunt. Sanity dropped 20% after an event. Exclusion: If you get a 'Ghost Mist' event, it is not an Oni.)]"
+]
+},
+{
+"name": "{Онрё} [Onryo]", "number": "17",
+"book": " ", "lights": "x", "dots": " ", "uf": " ", "emp": " ", "radio": "x", "zero": "x", "percentage": "60/100%", "speed": "1.7",
+"strongSide": [
+"{Чаще задувает огонь (x2), если хотя бы один из игроков мёртв или рассудок ниже 60%, даже если шанса охоты нет.} [More often blows out fire (x2) if at least one player is dead or sanity is below 60%, even if there's no hunt chance.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Будет пытаться охотиться при любом уровне рассудка после тушения каждого 3-го пламени.} [Will attempt to hunt at any sanity after extinguishing every 3rd flame.]",
+"{Не может зажигать источники огня.} [Cannot light fire sources.]",
+"{Пламя действует как распятие, приоритет над распятием.} [Flames act like crucifixes, prioritizes flames over crucifixes.]",
+"{Больше вероятность потушить пламя, чем больше игроков мертвы.} [More likely to extinguish a flame the more players are dead.]",
+"{(Тест: Тушит один и тот же источник огня дважды за 20с. Если рассудок >75%: свеча на распятии, Онрё тушит свечу, затем распятие срабатывает через 1-6с. Если рассудок <35%: свечи постоянно горят, призрак не охотится/не использует распятие долго. Исключения: Зажигает источник огня. Распятие используется, пока свеча горит.)} [(Test: Blows out the same firelight twice within 20s. If sanity >75%: candle on crucifix, Onryo blows out candle, then crucifix used after 1-6s. If sanity <35%: candles constantly lit, ghost does not hunt/use crucifix for extended period. Exclusions: Lights a fire source. Crucifix is used while candle is still lit.)]"
+]
+},
+{
+"name": "{Полтергейст} [Poltergeist]", "number": "4",
+"book": "x", "lights": " ", "dots": " ", "uf": "x", "emp": " ", "radio": "x", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [],
+"weakSide": [],
+"0evidence": [
+"{Во время охоты бросает предмет каждые 0.5с с увеличенной силой.} [During hunts, throws an item every 0.5s with increased force.]",
+"{Имеет более высокий шанс бросать предметы.} [Has a higher chance to throw objects.]",
+"{Взрыв Полтергейста: бросает несколько предметов одновременно, снижая рассудок на 2% за предмет.} [Poltergeist Explosion: throws multiple objects at the same time, decreasing sanity by 2% per item.]",
+"{(Тест: Разместите предметы в ряд или в кучу, если многие брошены одновременно.)} [(Test: Place items in a row, if all are thrown a long distance. Place items in a pile, if many are thrown at the same time.)]"
+]
+},
+{
+"name": "{Райдзю} [Raiju]", "number": "19",
+"book": " ", "lights": "x", "dots": "x", "uf": " ", "emp": "x", "radio": " ", "zero": " ", "percentage": "50/65%", "speed": "1.7-2.5",
+"strongSide": [
+"{Постоянно создает помехи в оборудовании во время охоты в 15м вместо 10м.} [Raiju constantly creates interference in equipment during a hunt.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Может охотиться при 65% рассудка рядом с электроникой.} [Can hunt at 65% sanity when near active electronic equipment.]",
+"{Электронные помехи на 15м.} [Electronic disturbance at 15m.]",
+"{Увеличенная скорость рядом с активным электронным оборудованием.} [Increased speed near active electronic equipment.]",
+"{(Тест: Быстрый рядом с электроникой, замедляется дальше. Скорость увеличивается/уменьшается с электроникой. Охотится рано (50-65%). Исключение: Не ускоряется рядом с электроникой.)} [(Test: Fast near electronics, slows down further away. Speed increases/decreases with electronics. Hunts early (50-65%). Exclusion: Does not speed up near electronics.)]"
+]
+},
+{
+"name": "{Ревенант} [Revenant]", "number": "8",
+"book": "x", "lights": "x", "dots": " ", "uf": " ", "emp": " ", "radio": " ", "zero": "x", "percentage": "50%", "speed": "1.0-3.0",
+"strongSide": [
+"{Во время охоты медленный (1.0м/с) до обнаружения игрока, затем ускоряется до 3.0м/с.} [During a hunt, slow (1.0m/s) until player detected, then speeds up to 3.0m/s.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Во время охоты медленный (1.0м/с) до обнаружения игрока, затем ускоряется до 3.0м/с.} [During a hunt, slow (1.0m/s) until player detected, then speeds up to 3.0m/s.]",
+"{(Тест: Слушайте скорость: медленный, затем быстро ускоряется при обнаружении, затем замедляется. Если скорость не 1.0м/с или 3.0м/с, это не Ревенант.)} [(Test: Listen to speed: slow, then speeds up fast when detected, then slows down. If speed is not 1.0m/s or 3.0m/s, it is not a Revenant.)]"
+]
+},
+{
+"name": "{Тайэ} [Thaye]", "number": "24",
+"book": "x", "lights": "x", "dots": "x", "uf": " ", "emp": " ", "radio": " ", "zero": " ", "percentage": "15/75%", "speed": "1.0-2.75",
+"strongSide": [],
+"weakSide": [
+"{Часто запускает паранормальные явления, чтобы успешно начать охотиться.} [Often triggers paranormal events to successfully start hunting.]"
+],
+"0evidence": [
+"{Возраст на доске Уиджи увеличивается.} [Age response on Ouija board increases.]",
+"{Стареет каждые 1-2 минуты (если игрок в комнате).} [Ages every 1-2 minutes (if player in room).]",
+"{Более активен в молодом возрасте.} [More active when younger.]",
+"{(Тест: Возраст на доске Уиджи увеличивается. Скорость уменьшается каждая охота без LOS. Не ускоряется в LOS. Исключение: Ускоряется в LOS.)} [(Test: Ouija board age increases. Speed decreases each hunt without LOS. Does not speed up in LOS. Exclusion: Speeds up in LOS.)]"
+]
+},
+{
+"name": "{Тень} [Shade]", "number": "9",
+"book": "x", "lights": " ", "dots": " ", "uf": " ", "emp": "x", "radio": " ", "zero": "x", "percentage": "35%", "speed": "1.7",
+"strongSide": [
+"{Менее активна, если игроки ходят вместе, и её сложнее определить. Во время паранормального явления имеет более высокий шанс (67%) создать дымку вместо физического проявления.} [Less active if players walk together, and harder to identify. During a paranormal event, it has a higher chance (67%) to create mist instead of a physical manifestation.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Единственный призрак, который может появляться как теневая модель на круге призыва, музыкальной шкатулке, событиях 'обезьянья лапа'.} [Only ghost that can appear as a shadow model on summoning circle, music box, and monkey paw events.]",
+"{Не может выполнять 'поющие' события.} [Cannot perform 'singing' events.]",
+"{Не охотится/не устраивает события в комнате с игроком.} [Does not hunt/do events in the same room as a player.]",
+"{Не выполняет взаимодействия с ЭМП 2/3 в комнате с игроком.} [Does not do EMF 2/3 interactions in the same room as a player.]",
+"{Чаще устраивает события при низком рассудке (не при 100%).} [Does more events at lower sanity (not at 100%).]",
+"{Не задувает источники огня во время охоты, если в комнате с игроком.} [Will not blow out firelights during a hunt if in the same room as a player.]",
+"{(Тест: Если на круге призыва/музыкальной шкатулке/обезьяньей лапе появляется теневая модель. Если ничего не делает в комнате с игроком. Если не тушит огонь в комнате с игроком во время охоты. Исключения: 'поющий' призрак, ЭМП 2/3/4 в комнате с игроком, охотится в комнате с игроком, охотится >35% рассудка, событие при 100% рассудке, задувает огонь в комнате с игроком во время охоты.)} [(Test: If a shadow model appears on summoning circle/music box/monkey paw. If it does nothing in the room with a player. If it does not extinguish fire in the room with a player during a hunt. Exclusions: 'Singing' ghost, EMF 2/3/4 in room with player, hunts in room with player, hunts >35% sanity, event at 100% sanity, blows out fire in room with player during a hunt.)]"
+]
+},
+{
+"name": "{Фантом} [Phantom]", "number": "3",
+"book": " ", "lights": " ", "dots": "x", "uf": "x", "emp": "", "radio": "x", "zero": " ", "percentage": "50%", "speed": "1.7",
+"strongSide": [
+"{Сильно снижает рассудок игроков, которые долго на него смотрят (как вне, так и во время охоты).} [Significantly reduces the sanity of players who look at it for a long time (both outside and during a hunt).]",
+"{Может блуждать к случайному игроку, оставляя ЭМП 2.} [Can roam toward a random player, leaving EMF 2.]"
+],
+"weakSide": [],
+"0evidence": [
+"{Не появится на фотографиях 'Призрак' или видео 'Призрак'.} [Will not appear in 'Ghost' photos or 'Ghost' videos.]",
+"{Фотографирование или видеосъемка призрака заставит его исчезнуть.} [Taking a photo or video of the ghost will cause it to disappear.]",
+"{Менее заметен во время охоты.} [Less visible during hunts.]",
+"{Игрок будет терять 0.5% рассудка в секунду, находясь в радиусе сердцебиения призрака во время охоты и событий.} [Player will lose 0.5% sanity/s while in heartbeat range during hunts and events.]",
+"{Может блуждать к случайному игроку, оставляя ЭМП 2.} [Can roam toward a random player, leaving EMF 2.]",
+"{(Тест: Сделайте фото/видео призрака, если он исчезает и не появляется на фото/видео 'Призрак'. Наблюдайте, если призрак почти невидим во время охоты. Если появляется на фото 'Призрак' или имеет нормальное/учащенное моргание, это не Фантом.)} [(Test: Take a photo/video of the ghost, if it disappears and does not appear in 'Ghost' photo/video. Observe if the ghost is nearly invisible during a hunt. If it appears in a 'Ghost' photo or has normal/increased blinking, it is not a Phantom.)]"
+]
+},
+{
+"name": "{Ханту} [Hantu]", "number": "14",
+"book": " ", "lights": "x", "dots": " ", "uf": "x", "emp": " ", "radio": " ", "zero": "x", "percentage": "50%", "speed": "1.4-2.7",
+"strongSide": [],
+"weakSide": [
+"{Не скрывает улику Минусовая температура.} [Doesn't hide evidence Freezing Temps.]"
+],
+"0evidence": [
+"{Будет иметь видимое ледяное дыхание во время охоты, когда рубильник выключен/сломан.} [Will have visible freezing breath during hunts when the breaker is off/broken.]",
+"{Не может включить рубильник.} [Cannot turn on the breaker.]",
+"{Чаще выключает рубильник.} [More likely to turn off the breaker.]",
+"{Быстрее в холодных комнатах во время охоты.} [Is faster in colder rooms during hunts.]",
+"{(Тест: Видимое дыхание при выключенном рубильнике. Случайные изменения скорости во время охоты. Исключения: Нет видимого дыхания при выключенном рубильнике, включает рубильник, ускоряется в LOS.)} [(Test: Visible breath with breaker off. Random speed changes during a hunt. Exclusions: No visible breath with breaker off, turns on breaker, speeds up in LOS.)]"
+]
+},
+{
+"name": "{Юрэй} [Yurei]", "number": "11",
+"book": " ", "lights": "x", "dots": "x", "uf": " ", "emp": " ", "radio": " ", "zero": "x", "percentage": "50%", "speed": "1.7",
+"strongSide": [
+"{Уменьшает рассудок всех игроков в радиусе 7.5 метров на 15%. Двери — основное оружие Юрэя против игроков (часто взаимодействует с дверями).} [Reduces the sanity of all players within 7.5 meters by 15%. Doors are Yurei's primary weapon against players (often interacts with doors).]"
+],
+"weakSide": [
+"{Не трясёт дверями.} [Does not shake doors.]",
+"{Благовоние блокирует его возможность перемещения по локации примерно на 90 секунд.} [Incense blocks its ability to move around the location for approximately 90 seconds.]"
+],
+"0evidence": [
+"{Единственный призрак, который может закрывать или взаимодействовать с выходной дверью вне охоты/события.} [Only ghost that can close or interact with an exit door outside of a hunt/event.]",
+"{Должен полностью открывать/закрывать дверь при взаимодействии (вне охоты).} [Must fully open/shut a door when interacting (outside of a hunt).]",
+"{(Исключение: Если дверь не открывается/закрывается полностью, это не Юрей.)} [(Exclusion: If the door does not fully open/shut, it is not a Yurei.)]"
+]
+}
+].sort((a, b) => parseInt(a.number) - parseInt(b.number)); // ИЗМЕНЕНО: Сортировка данных призраков по параметру "number".
+
+        // MIMIC_HARD_EXCEPTIONS: Закомментировано по запросу, т.к. это было тестовое использование.
+        /*
+        const MIMIC_HARD_EXCEPTIONS = [
+            "(Горё)", // Проектор только на камере, Меняет/уходит от комнаты
+            "(Ханту)", // Включает щиток, Не ускоряется на охоте
+            "(Райдзю)", // Выключает щиток
+        ];
+        */
+
+        // Карта особенностей, которые дают зеленый оверлей на призраков (призраки, которые *имеют* эту особенность).
+        const SIDEBAR_FEATURE_GHOST_MAPPING = {
+            "faster-drains-the-mind": ["Банши", "Джинн", "Морой", "Они", "Полтергейст", "Фантом", "Юрэй", "Джинн"], // Быстрее истощает рассудок
+            "move-to-player-not-geh": ["Банши", "Фантом", "Мираж"], // Движение к игроку (не ГЕ/О)
+            "notaccelerating-on-the-hunt": ["Тайэ", "Ханту", "Морой"], // Не ускоряется на охоте
+            "doesnt-like-fire": ["Онрё"], // Не любит огонь
+            "Doesnt-like-the-light": ["Мара"], // Не любит свет
+            "six-fingered-prints": ["Обакэ"], // Шестипалые отпечатки
+            "dots-on-camera-only": ["Горё"], // Проектор только на камере
+            "throws-objects-hard": ["Полтергейст"], // Сильно швыряет предметы
+            "radio-hiss": ["Деоген"], // Радио: шипение
+            "microphone-scream": ["Банши"], // Микрофон: крик
+			"interactions-remote-points": ["Близнецы"], // Действия далеко друг от друга
+            "accelerates-when-detected": ["Ревенант"], // Ускоряется при обнаружении
+            "slows-down-when-close": ["Деоген", "Джинн"], // Замедляется при приближении
+			"steam-at-low-temp": ["Ханту"], // Пар при низкой температуре
+			"quiet-footsteps-hunt": ["Мюлинг"] // Тихие шаги на охоте
+        };
+
+        // Карта особенностей, которые дают серый оверлей на призраков (призраки, которые *не имеют* этой особенности).
+        const SIDEBAR_REVERSE_INTERACTION_MAPPING = {
+            "makes-a-Airball": ["Они"],  // Делает дымку
+            "walk-far-from-room": ["Горё"], // Меняет/уходит от комнаты
+            "comes-in-salt": ["Мираж"], // Наступает в соль
+            "shake-the-door": ["Юрэй"], // Трясёт/хлопает дверью
+            "turnon-breaker": ["Ханту"], // Включает щиток
+            "turnoff-breaker": ["Джинн"], // Выключает щиток
+			"turns-on-the-light": ["Мара"] // Включает свет
+        };
+
+        // Набор особенностей, которые Мимик не может имитировать. На все остальные будет зеленый оверлей.
+        const MIMIC_UNIMITATABLE_FEATURES = new Set([
+            "dots-on-camera-only", // Проектор только на камере
+			"makes-a-Airball",	// Делает дымку
+            "walk-far-from-room", // Меняет/уходит от комнаты
+            "comes-in-salt", // Наступает в соль
+            "shake-the-door", // Трясёт/хлопает дверями
+            "turnon-breaker", // Включает щиток
+            "turnoff-breaker", // Выключает щиток
+			"turns-on-the-light" // Включает свет
+        ]);
+
+        // Пути к аудиофайлам для уникальных звуков призраков.
+        const AUDIO_FILES = {
+            "radio-hiss": "app/snd/deogen.wav",
+            "microphone-scream": "app/snd/banshee.wav",
+            "speed-sound": "app/snd/speed.wav" // Добавлен аудиофайл для скорости
+        };
+
+        // Данные о картах, включая их ID, название, порядок отображения и путь к изображению.
+        const MAP_DATA = [
+            {
+                id: "tanglewood",
+                name: "Tanglewood Street House", 
+                displayOrder: 1,
+                imagePath: "app/img/maps/01 Tanglewood/map.png"
+            },
+            {
+                id: "edgefield",
+                name: "Edgefield Road House",
+                displayOrder: 2,
+                imagePath: "app/img/maps/02 Edgefield/map.png"
+            },
+            {
+                id: "ridgeview",
+                name: "Ridgeview Road House",
+                displayOrder: 3,
+                imagePath: "app/img/maps/03 Ridgeview/map.png"
+            },
+            {
+                id: "grafton",
+                name: "Grafton Farmhouse",
+                displayOrder: 4,
+                imagePath: "app/img/maps/04 Grafton Farm/map.png"
+            },
+            {
+                id: "willowStreet",
+                name: "Willow Street House",
+                displayOrder: 5,
+                imagePath: "app/img/maps/05 Willow Street/map.png"
+            },
+            {
+                id: "woodwind",
+                name: "Woodwind Camp",
+                displayOrder: 6,
+                imagePath: "app/img/maps/06 Woodwind Camp/map.png"
+            },
+            {
+                id: "map-size-modal-close",
+                name: "{-------------средние карты-------------} [--------------medium maps--------------]",
+                displayOrder: 6.5, 
+                isDivider: true // Флаг, указывающий, что это элемент-разделитель.
+            },
+            {
+                id: "mapleLodge",
+                name: "Maple Lodge Campsite",
+                displayOrder: 7,
+                imagePath: "app/img/maps/07 Maple Lodge Camp/map.png"
+            },
+            {
+                id: "prison",
+                name: "Prison",
+                displayOrder: 8,
+                imagePath: "app/img/maps/08 Prison/map.png"
+            },
+            {
+                id: "sunnyMeadowsRestricted",
+                name: "Sunny Meadows Restricted",
+                displayOrder: 9,
+                imagePath: "app/img/maps/09 Sunny Meadows Restricted/map.png"
+            },
+            {
+                id: "bleasdale",
+                name: "Bleasdale Farmhouse",
+                displayOrder: 10,
+                imagePath: "app/img/maps/11 Bleasdale Farm/map.png"
+            },
+            {
+                id: "pointHopeLighthouse",
+                name: "Point Hope Lighthouse",
+                displayOrder: 11,
+                imagePath: "app/img/maps/12 Point Hope Lighthouse/map.png"
+            },
+            {
+                id: "map-size-modal-close",
+                name: "{-------------большие карты-------------} [----------------large maps----------------]",
+                displayOrder: 11.5, 
+                isDivider: true // Флаг, указывающий, что это элемент-разделитель.
+            },
+            {
+                id: "sunnyMeadows",
+                name: "Sunny Meadows Mental Institution",
+                displayOrder: 12,
+                imagePath: "app/img/maps/10 Sunny Meadows/map.png"
+            },
+            {
+                id: "brownstoneHighSchool",
+                name: "Brownstone High School",
+                displayOrder: 13,
+                imagePath: "app/img/maps/13 High School Brownstone/map.png"
+            },
+        ];
+
+ </script>
+    <script src="./app/js/renderer.js"></script> 
+</body>
+</html>

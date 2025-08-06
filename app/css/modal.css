@@ -1,0 +1,164 @@
+
+
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Оставаться на месте */
+    z-index: 1000; /* Сидеть поверх всего */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    overflow: hidden; /* Скрываем общий overflow, чтобы фон не прокручивался */
+    
+    /* ВОССТАНАВЛИВАЕМ ПАРАМЕТРЫ ОВЕРЛЕЯ (БЕЗ РАЗМЫТИЯ И ИНТЕНСИВНОСТИ), НЕ ТРОГАЕМ ИХ БОЛЬШЕ */
+    background-color: rgba(0,0,0,0); /* Полностью прозрачный фон */
+    backdrop-filter: blur(0px); /* Без размытия */
+    -webkit-backdrop-filter: blur(0px); /* Для поддержки Safari */
+
+    pointer-events: none; /* Это гарантирует, что фон модального окна не перехватывает клики */
+}
+
+/* Добавляем класс для активации модального окна */
+.modal.visible {
+    display: block; /* Вернул block, так как позиционирование будет absolute у modal-content */
+}
+
+.modal-content {
+    background-color: var(--gray-overlay-color); /* ИЗМЕНЕНО: Установлен серый цвет оверлея для областей без изображения */
+    /* Паддинги здесь, чтобы они влияли на общие размеры контента */
+    padding: 5px; 
+    
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    
+    display: flex;
+    flex-direction: column; /* Элементы внутри modal-content располагаются по вертикали */
+    
+    /* ИЗМЕНЕНО: Новые параметры позиционирования и размеров для растягивания до желтой области */
+    position: absolute;
+    top: 0; /* Прилипаем к верху страницы */
+    left: var(--sidebar-width); /* Прилипаем к правому краю сайдбара */
+    right: 0; /* Прилипаем к правому краю страницы */
+    bottom: 0; /* Прилипаем к низу страницы */
+
+    width: calc(100vw - var(--sidebar-width)); /* Рассчитываем ширину: вся ширина viewport минус ширина сайдбара */
+    height: 100vh; /* Рассчитываем высоту: вся высота viewport */
+    
+    overflow: hidden; /* Скрыть переполнение в модальном окне */
+    box-sizing: border-box; /* Важно, чтобы padding и border включались в width/height */
+
+    pointer-events: auto; /* Это делает само содержимое модального окна кликабельным */
+}
+
+/* Изменения для кнопки закрытия */
+.close-button {
+    color: var(--text-color);
+    font-size: 80px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10; 
+    position: absolute; /* Позиционируем относительно modal-content */
+    top: 10px; /* Отступ сверху от .modal-content */
+    left: 10px; /* Отступ слева от .modal-content */
+    background-color: rgba(0, 0, 0, 0.5); /* Добавьте фон для лучшей видимости */
+    padding: 0 8px;
+    border-radius: 8px;
+    line-height: 1; /* Для лучшего выравнивания 'x' */
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.modal-header {
+    display: none; 
+}
+.modal-header h3 {
+    display: none;
+}
+
+/* Стили для modal-body */
+.modal-body {
+    display: flex; 
+    flex-direction: column; /* Элементы внутри будут располагаться вертикально */
+    flex-grow: 1; /* modal-body должен растягиваться, чтобы заполнить доступное пространство */
+    min-width: 0; /* Важно для flex-элементов */
+    min-height: 0; /* Важно для flex-элементов */
+    overflow: hidden; /* Скрываем overflow на modal-body */
+    
+    padding: 0; /* Убираем padding из modal-body, так как padding уже на modal-content */
+    /* Добавляем отступы для кнопки закрытия ЗДЕСЬ, если они нужны,
+       но так как кнопка absolute, то padding на modal-body менее предпочтителен,
+       лучше убедиться, что контент не перекрывает кнопку */
+    /* padding-top: 30px;
+    padding-left: 30px; */
+}
+
+.map-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+
+    flex-grow: 1; /* map-display растягивается, чтобы занять доступное пространство в modal-body */
+    flex-shrink: 1;
+    min-width: 0;
+    min-height: 0;
+    width: 100%; /* *** ОСТАВЛЯЕМ ЭТИ 100% *** */
+    height: 100%; /* *** ОСТАВЛЯЕМ ЭТИ 100% *** */
+    
+    overflow: hidden; /* Убедимся, что контейнер не создает свои полосы прокрутки */
+    box-sizing: border-box;
+}
+
+.map-display img {
+    /* Эти свойства КРАЙНЕ ВАЖНЫ для масштабирования без искажений и без прокрутки */
+    /* Они позволяют изображению занимать 100% родителя, но object-fit регулирует его внутри */
+    max-width: 100%; /* Изображение не будет шире 100% своего родителя */
+    max-height: 100%; /* Изображение не будет выше 100% своего родителя */
+    width: auto; /* Позволяем ширине определяться содержимым и max-width */
+    height: auto; /* Позволяем высоте определяться содержимым и max-height */
+    
+    display: block;
+    object-fit: contain; /* Используйте 'contain', чтобы изображение ВСЕГДА было полностью видно */
+    box-sizing: border-box;
+}
+
+
+/* Медиа-запросы для адаптивности на маленьких экранах */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: unset;
+        max-height: 95vh;
+        bottom: unset;
+        right: unset;
+        position: static; /* На мобильных экранах позиционирование меняется на статическое */
+        padding: 10px; /* Уменьшаем паддинг для мобильных */
+    }
+    .close-button {
+        top: 5px;
+        left: 5px;
+    }
+    .modal-body {
+        flex-direction: column;
+        max-height: unset;
+        overflow-y: auto; /* На мобильных, если контент не помещается, разрешаем прокрутку */
+        padding: 0; /* На мобильных убираем паддинг с modal-body, он будет на modal-content */
+    }
+    .map-display {
+        flex: none;
+        width: 100%;
+        max-height: unset;
+        display: flex; /* На мобильных тоже используем flex для центрирования img */
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Скрываем overflow на map-display на мобильных */
+    }
+    .map-display img {
+        /* object-fit: contain; остается */
+    }
+}

@@ -1,0 +1,45 @@
+/* ========================================================================== */
+/* --- БАЗОВЫЕ СТИЛИ ДОКУМЕНТА И ОСНОВНОЙ МАКЕТ --- */
+/* ========================================================================== */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Скрываем общий оверфлоу для body, управляется scrollable-table-container */
+}
+
+/* Новый контейнер, чтобы сайдбар и основной контент располагались рядом */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Занимает всю высоту viewport */
+}
+
+/* Контейнер основного содержимого приложения, управляет отступами и центрированием */
+.main-content {
+    flex-grow: 1; /* Занимает все доступное горизонтальное пространство */
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: var(--main-content-padding-top);
+    padding-bottom: var(--main-content-padding-bottom);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрирует содержимое по горизонтали */
+    width: 100%; /* Устанавливаем ширину для flex-элемента */
+    box-sizing: border-box;
+}
+
+/* Контейнер для таблицы, обеспечивающий горизонтальное центрирование */
+.scrollable-table-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center; /* Центрирует таблицу по горизонтали */
+    margin-bottom: 20px; /* Добавит отступ только снизу */
+}
+
